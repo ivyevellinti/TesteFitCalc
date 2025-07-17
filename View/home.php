@@ -1,4 +1,5 @@
 <?php
+// VERIFICA SE AS INFORMAÇÕES DO USUÁRIO EXISTEM DENTRO DA SESSÃO DO MEU NAVEGADOR
 session_start();
 require_once '../vendor/autoload.php';
 // IMPORTANDO O CONTROLLER
@@ -11,6 +12,12 @@ $userController = new UserController();
 
 $imcResult = null;
 $userInfo = null;
+
+// VERIFICANDO SE HOUVE LOGIN
+if(!$userController->isLoggedIn()){
+    header('Location: ../index.php');
+    exit();
+}
 
 $user_id = $_SESSION['id'];
 $user_fullname = $_SESSION['user_fullname'];
