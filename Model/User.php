@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace Model;
 
@@ -6,21 +6,25 @@ use Model\Connection;
 
 use PDO;
 use PDOException;
+use Exception;
 
-class User {
+class User
+{
     private $db;
-    
+
     /*
      * MÉTODO QUE IRÁ SER EXECUTADO TODA VEZ QUE
      * FOR CRIADO UM OBJETO DA CLASSE -> USER
      */
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->db = Connection::getInstance();
     }
 
     // FUNÇÃO DE CRIAR USUÁRIO
-    public function registerUser($user_fullname, $email, $password) {
+    public function registerUser($user_fullname, $email, $password)
+    {
         try {
             // INSERÇÃO DE DADOS NA LINGUAGEM SQL
             $sql = 'INSERT INTO user (user_fullname, email, password, created_at) VALUES (:user_fullname, :email, :password, NOW())';
@@ -37,7 +41,7 @@ class User {
 
             // EXECUTAR TUDO
 
-            $stmt->execute();
+            return $stmt->execute();
 
         } catch (PDOException $error) {
             // EXIBIR MENSAGEM DE ERRO COMPLETA E PARAR A EXECUÇÃO
@@ -47,7 +51,8 @@ class User {
     }
 
     // LOGIN
-    public function getUserByEmail($email) {
+    public function getUserByEmail($email)
+    {
         try {
             $sql = "SELECT * FROM user WHERE email = :email LIMIT 1";
 
@@ -58,11 +63,13 @@ class User {
             $stmt->execute();
 
             return $stmt->fetch(PDO::FETCH_ASSOC);
-        } catch (PDOException $error) { }
+        } catch (PDOException $error) {
+        }
     }
 
     // OBTER INFORMAÇÕES DO USUÁRIO
-    public function getUserInfo($id, $user_fullname, $email) {
+    public function getUserInfo($id, $user_fullname, $email)
+    {
         try {
             $sql = "SELECT user_fullname, email FROM user WHERE id = :id AND user_fullname = :user_fullname AND email = :email";
 
@@ -73,6 +80,7 @@ class User {
             $stmt->bindParam(":email", $email, PDO::PARAM_STR);
 
             $stmt->execute();
+
 
             /**
              * fetch = querySelector();

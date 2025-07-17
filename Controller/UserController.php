@@ -15,24 +15,22 @@ class UserController
     }
 
     // REGISTRO DE USUÁRIO
-    public function registerUser($user_fullname, $email, $password)
+    public function createUser($user_fullname, $email, $password)
     {
-        try {
-            if (empty($user_fullname) or empty($email) or empty($password)) {
-                return false;
-            }
 
-            // $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-
-            return $this->userModel->registerUser($user_fullname, $email, $password);
-        } catch (Exception $error) {
-            echo "Erro ao cadastrar usuário: " . $error->getMessage();
+        if (empty($user_fullname) or empty($email) or empty($password)) {
             return false;
         }
+
+        // $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+
+        return $this->userModel->registerUser($user_fullname, $email, $password);
+
     }
 
     // E-MAIL JÁ CADASTRADO?
-    public function checkUserByEmail($email) {
+    public function checkUserByEmail($email)
+    {
         return $this->userModel->getUserByEmail($email);
     }
 
@@ -54,20 +52,21 @@ class UserController
             $_SESSION['id'] = $user['id'];
             $_SESSION['user_fullname'] = $user['user_fullname'];
             $_SESSION['email'] = $user['email'];
-            
+            var_dump($_SESSION);
             return true;
         }
         return false;
     }
 
     // USUÁRIO LOGADO?
-    public function isLoggedIn(){
+    public function isLoggedIn()
+    {
         return isset($_SESSION['id']);
     }
 
     // RESGATAR DADOS DO USUÁRIO
-    public function getUserData($id, $user_fullname, $email) {
-        $id = $_SESSION['id'];
+    public function getUserData($id, $user_fullname, $email)
+    {
 
         return $this->userModel->getUserInfo($id, $user_fullname, $email);
     }
